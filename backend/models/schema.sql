@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS exercises(
     name VARCHAR(255) NOT NULL,
     primary_muscle_group VARCHAR(255) NOT NULL,
     secondary_muscle_group VARCHAR(255),
+    weight_type VARCHAR(50) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
@@ -32,7 +33,6 @@ CREATE TABLE IF NOT EXISTS workout_entries(
     workout_id INTEGER NOT NULL,
     exercise_id INTEGER NOT NULL,
     display_order INTEGER NOT NULL,
-    weight_type VARCHAR(50) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (workout_id) REFERENCES workouts(id) ON DELETE CASCADE,
     FOREIGN KEY (exercise_id) REFERENCES exercises(id) ON DELETE CASCADE
