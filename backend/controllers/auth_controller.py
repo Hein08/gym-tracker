@@ -1,4 +1,5 @@
-from backend.models.user_crud import create_user, get_user_by_email
+from backend.models.user_crud import create_user, get_user_by_email, get_user_by_id
+from flask import session
 import re
 import bcrypt
 
@@ -85,12 +86,40 @@ def login(data):
             "status": "error",
             "message": "Invalid email or password"
         }, 401
+    
+    session["user_id"] = user['id']
 
     return {
         "status": "success",
-        "message": "Login successful",
+        "message": "Login successful"
+    }, 200
+
+def me():
+    user_id = session.get("user_id")
+    if not user_id:
+        return {
+            "status": "error",
+            "message": "Not authenticated"
+        }, 401
+    
+    user = get_user_by_id(user_id)
+    if not user:
+        return {
+            "status": "error",
+            "message": "User not found"
+        }, 404
+    
+    return {
+        "status": "success",
         "user_id": user['id'],
         "email": user['email'],
         "first_name": user['first_name'],
         "last_name": user['last_name']
+    }, 200
+
+def logout():
+    session.clear()
+    return {
+        "status": "success",
+        "message": "Logged out successfully"
     }, 200

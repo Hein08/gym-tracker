@@ -5,7 +5,8 @@ from backend.routes.auth_routes import auth_bp
 
 def create_app():
     app = Flask(__name__)
-    CORS(app)
+    app.config['SECRET_KEY'] = 'supersecretkey'
+    CORS(app, supports_credentials=True)
 
     init_db()
 
