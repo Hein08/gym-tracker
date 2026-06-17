@@ -54,3 +54,43 @@ def register(data):
         "user_id": user_id,
         "email": email
     }, 201
+
+def login(data):
+    required_fields = ['email', 'password']
+    missing = [field
+               for field in required_fields
+                if not data.get(field)]
+    
+    if missing:
+        return {
+            "status": "error",
+            "message": f"Missing fields: {', '.join(missing)}"
+        }, 400
+    
+    if not is_valid_email(data['email']):
+        return {
+            "status": "error",
+            "message": "Invalid email format"
+        }, 400
+
+    user = get_user_by_email(data['email'])
+    if not user:
+        return {
+            "status": "error",
+            "message": "Invalid email or password"
+        }, 401
+
+    if not bcrypt.checkpw(data['password'].encode('utf-8'), user['password_hash'].encode('utf-8')):
+        return {
+            "status": "error",
+            "message": "Invalid email or password"
+        }, 401
+
+    return {
+        "status": "success",
+        "message": "Login successful",
+        "user_id": user['id'],
+        "email": user['email'],
+        "first_name": user['first_name'],
+        "last_name": user['last_name']
+    }, 200
