@@ -1,12 +1,13 @@
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username VARCHAR(255) NOT NULL UNIQUE,
     email VARCHAR(255) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
+    first_name VARCHAR(255) NOT NULL,
+    last_name VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE workouts (
+CREATE TABLE IF NOT EXISTS workouts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
     workout_date DATE NOT NULL,
@@ -16,7 +17,7 @@ CREATE TABLE workouts (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
-CREATE TABLE exercises(
+CREATE TABLE IF NOT EXISTS exercises(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_id INTEGER NOT NULL,
     name VARCHAR(255) NOT NULL,
@@ -26,7 +27,7 @@ CREATE TABLE exercises(
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
-CREATE TABLE workout_entries(
+CREATE TABLE IF NOT EXISTS workout_entries(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     workout_id INTEGER NOT NULL,
     exercise_id INTEGER NOT NULL,
@@ -37,7 +38,7 @@ CREATE TABLE workout_entries(
     FOREIGN KEY (exercise_id) REFERENCES exercises(id) ON DELETE CASCADE
 );
 
-CREATE TABLE workout_entry_sets(
+CREATE TABLE IF NOT EXISTS workout_entry_sets(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     workout_entry_id INTEGER NOT NULL,
     set_number INTEGER NOT NULL,
